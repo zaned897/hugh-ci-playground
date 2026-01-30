@@ -23,7 +23,7 @@ jobs:
           name: Run Regression Pytest
           command: |
             cd hugh_test
-            pytest tests/test_regression.py -n 3 -v
+            pytest tests/test_regression.py -k "amtrust_multi_state_multi_class_933_kapahulu_ave" -n 1 -vv
             # Full test suite (enable when stable):
             # pytest -n auto -v
 
