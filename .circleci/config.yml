@@ -1,0 +1,40 @@
+version: 2.1
+
+jobs:
+  run-regression-tests:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+
+      - run:
+          name: Clone test repository
+          command: |
+            git clone https://${GITHUB_TOKEN}@github.com/Asymm-Developers/hugh_test.git
+
+      - run:
+          name: Install test dependencies
+          command: |
+            cd hugh_test
+            pip install -r requirements.txt
+            pip install pytest-xdist
+
+      - run:
+          name: Run Regression Pytest
+          command: |
+            cd hugh_test
+            pytest tests/test_regression.py -n 3 -v
+            # Full test suite (enable when stable):
+            # pytest -n auto -v
+
+workflows:
+  version: 2
+  test-on-change:
+    jobs:
+      - run-regression-tests:
+          filters:
+            branches:
+              only:
+                - staging
+                - main
+
